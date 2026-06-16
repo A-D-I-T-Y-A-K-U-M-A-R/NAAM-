@@ -309,7 +309,7 @@ function startInactivityCheck() {
 
         processCanvas();
 
-    }, 999);
+    }, 1000);
 
 }
 
@@ -326,7 +326,9 @@ async function processCanvas(){
 
         if(result === null){
 
-           // alert("नाम गलत है।\nकृपया केवल राम या राधा लिखें।");
+           /* alert(
+                "नाम गलत है।\nकृपया केवल राम या राधा लिखें।"
+            );*/
 
             clearCanvas();
 
@@ -343,7 +345,9 @@ async function processCanvas(){
 
         console.log(err);
 
-        //alert("नाम पहचानने में त्रुटि हुई।" );
+       /* alert(
+            "नाम पहचानने में त्रुटि हुई।"
+        );*/
 
         clearCanvas();
 
@@ -688,7 +692,7 @@ saveData();
    OPTIONAL TEST DATA
 =========================== */
 
-
+/*
 for(let i=0;i<600;i++){
 
     if(i % 2 === 0){
@@ -706,7 +710,7 @@ for(let i=0;i<600;i++){
 saveData();
 
 renderNotebook();
-
+*/
 
 console.log(
     "Naam Pustak Ready"
@@ -864,4 +868,3 @@ async function detectName(){
     return null;
 
 }
-
