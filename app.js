@@ -804,15 +804,18 @@ async function loadAI(){
         );
 
     }
-    catch(err){
+ catch(err){
 
-        console.error(err);
+    console.error(
+        "FULL ERROR:",
+        err
+    );
 
-        alert(
-            "AI Model Load Failed"
-        );
+    alert(
+        "AI Model Load Failed"
+    );
 
-    }
+}
 
 }
 
