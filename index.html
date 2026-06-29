@@ -3,261 +3,576 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>राधा नाम लेखन</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Noto+Sans+Devanagari:wght@400;700&display=swap');
 
-<title>नाम लेखन - ऑनलाइन नाम लेखन पुस्तक</title>
+  :root {
+    --saffron: #FF8C00;
+    --deep-maroon: #6B0F1A;
+    --gold: #D4AF37;
+    --cream: #FFF8E7;
+    --ink: #0D2B5E;
+    --bg: #1A0A2E;
+    --panel: #FFF8E7;
+  }
 
-<meta name="description" content="Naam Lekhan, Ram Naam Lekhan, Radha Naam Lekhan, Online Naam Lekhan Book.">
-<meta name="robots" content="index,follow">
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-<meta name="google-site-verification" content="gDsCbwrK5gr-SvLQu1cZsDB5o2fw68ACuIYy0Aoff8M" />
-<style>*{ margin:0; padding:0; box-sizing:border-box; font-family: "Noto Sans Devanagari", sans-serif;}
+  body {
+    background: var(--bg);
+    min-height: 100vh;
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    color: var(--cream);
+    overflow-x: hidden;
+  }
 
-body{
-    background:cyan;
-    min-height:100vh;
-}
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 36px 20px 20px;
+    position: relative;
+  }
 
-/* ---------- COMMON ---------- */
+  .header::before {
+    content: "🌸";
+    font-size: 28px;
+    display: block;
+    margin-bottom: 6px;
+    animation: pulse 2.5s infinite;
+  }
 
-.page{
-    width:100%;
-    min-height:100vh;
-    padding:20px;
-}
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
 
-.hidden{
-    display:none;
-}
+  .header h1 {
+    font-family: 'Tiro Devanagari Hindi', serif;
+    font-size: clamp(32px, 7vw, 62px);
+    background: linear-gradient(135deg, #D4AF37, #FF8C00, #D4AF37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 4px;
+    line-height: 1.2;
+  }
 
-h1{
-    text-align:center;
-    margin-bottom:15px;
-}
+  .header p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #c9a96e;
+    letter-spacing: 1px;
+  }
 
-.saffron-btn{
-    background:#ff9933;
-    color:white;
-    border:none;
-    padding:12px 24px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:16px;
-    transition:0.2s;
-}
+  .divider {
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 14px auto;
+  }
 
-.saffron-btn:hover{
-    transform:scale(1.05);
-}
+  /* COUNTER */
+  .counter-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    padding: 14px 20px;
+    background: rgba(212, 175, 55, 0.08);
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    flex-wrap: wrap;
+  }
 
-.saffron-btn:active{
-    transform:scale(0.92);
-}
+  .counter-box {
+    text-align: center;
+  }
 
-/* ---------- PAGE 1 ---------- */
+  .counter-num {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold);
+    font-family: 'Tiro Devanagari Hindi', serif;
+  }
 
-#canvasContainer{
-    width:100%;
-    display:flex;
-    justify-content:center;
-    margin-top:20px;
-}
+  .counter-label {
+    font-size: 11px;
+    color: #a08050;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
 
-#drawingCanvas{
-    background:white;
-    border:2px solid black;
-    width:min(95vw,1200px);
-    height:70vh;
-    touch-action:none;
-}
+  /* CANVAS SECTION */
+  .writing-section {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 16px;
+  }
 
-/* ---------- PAGE 2 ---------- */
+  .canvas-wrapper {
+    background: var(--panel);
+    border-radius: 12px;
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.15), 0 0 0 1px rgba(212, 175, 55, 0.25);
+    padding: 20px;
+    position: relative;
+  }
 
-.topBar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:20px;
-    flex-wrap:wrap;
-}
+  .canvas-label {
+    text-align: center;
+    font-size: 13px;
+    color: #8B6914;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+    font-weight: 700;
+  }
 
-.countBox{
-    font-size:18px;
-    font-weight:bold;
-}
+  /* RULED LINES BACKGROUND */
+  #writeCanvas {
+    display: block;
+    width: 100%;
+    height: 420px;
+    border-radius: 8px;
+    cursor: crosshair;
+    touch-action: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      #FFF8E7 0px,
+      #FFF8E7 47px,
+      #e8d5b0 48px
+    );
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.06);
+  }
 
-#bookContainer{
-    margin-top:20px;
-    display:flex;
-    justify-content:center;
-}
+  /* TOOLBAR */
+  .toolbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
 
-.book-page{
-    width:210mm;
-    height:295mm;
-    background:white;
-    position:relative;
-    box-shadow:0 0 10px rgba(0,0,0,.3);
-    overflow:hidden;
-}
+  .tool-btn {
+    padding: 9px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    letter-spacing: 0.5px;
+    transition: transform 0.1s, opacity 0.1s;
+  }
 
-/* Cover Page */
+  .tool-btn:active { transform: scale(0.95); }
 
-#coverPage{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    overflow:hidden;
-}
+  .btn-clear {
+    background: #c0392b;
+    color: white;
+    box-shadow: 0 3px 10px rgba(192, 57, 43, 0.4);
+  }
 
-#coverImage{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
+  .btn-save {
+    background: var(--ink);
+    color: white;
+    box-shadow: 0 3px 10px rgba(13, 43, 94, 0.5);
+  }
 
-/* Notebook Page */
+  .btn-undo {
+    background: #7f5200;
+    color: white;
+    box-shadow: 0 3px 10px rgba(127, 82, 0, 0.4);
+  }
 
-.gridPage{
-    padding-top:11.5mm;
-    padding-bottom:11.5mm;
-}
+  .size-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,0,0,0.05);
+    border-radius: 6px;
+    padding: 6px 12px;
+  }
 
-.grid{
-    width:100%;
-    height:272mm;
+  .size-group label {
+    font-size: 12px;
+    color: #6B4F12;
+    font-weight: 700;
+  }
 
-    display:grid;
+  .size-slider {
+    width: 80px;
+    accent-color: var(--ink);
+  }
 
-    grid-template-columns:repeat(8,1fr);
-    grid-template-rows:repeat(34,8mm);
-}
+  /* SAVED IMAGES */
+  .saved-section {
+    max-width: 900px;
+    margin: 10px auto 40px;
+    padding: 0 16px;
+  }
 
-.cell{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:16px;
-}
+  .saved-title {
+    text-align: center;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
 
-.page-number{
-    position:absolute;
-    left:8mm;
-    bottom:3mm;
-    font-size:14px;
-}
+  .saved-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+  }
 
-/* Bottom Controls */
+  .saved-card {
+    background: var(--panel);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(212,175,55,0.1);
+    border: 1px solid rgba(212,175,55,0.2);
+  }
 
-.bottomControls{
-    margin-top:20px;
-    display:flex;
-    gap:10px;
-    justify-content:center;
-    flex-wrap:wrap;
-}
+  .saved-card img {
+    width: 100%;
+    display: block;
+  }
 
-#jumpPage{
-    width:100px;
-    padding:8px;
-}
+  .saved-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    background: #fff0d0;
+  }
 
+  .saved-card-time {
+    font-size: 11px;
+    color: #8B6914;
+    font-weight: 700;
+  }
+
+  .btn-download {
+    font-size: 11px;
+    background: var(--ink);
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-weight: 700;
+  }
+
+  .btn-delete-card {
+    font-size: 11px;
+    background: #c0392b;
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-weight: 700;
+    margin-left: 4px;
+  }
+
+  .empty-msg {
+    text-align: center;
+    color: #a08050;
+    font-size: 13px;
+    padding: 20px;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    color: #5a3e00;
+    font-size: 12px;
+    border-top: 1px solid rgba(212,175,55,0.15);
+    background: rgba(212,175,55,0.04);
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #1A0A2E;
+    color: var(--gold);
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1px solid var(--gold);
+    transition: transform 0.3s ease;
+    z-index: 999;
+    pointer-events: none;
+  }
+
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+  }
 </style>
 </head>
 <body>
 
-<!-- PAGE 1 -->
-
-<div id="page1" class="page">
-
-    <h1>नाम लेखन</h1>
-
-    <div style="text-align:center;">
-        <button
-            id="openBookBtn"
-            class="saffron-btn">
-            पुस्तक
-        </button>
-    </div>
-
-    <div id="canvasContainer">
-
-        <canvas id="drawingCanvas"></canvas>
-
-    </div>
-
+<div class="header">
+  <h1>राधा नाम लेखन</h1>
+  <div class="divider"></div>
+  <p>✍️ श्री राधा जी का नाम लिखें — हर अक्षर एक प्रणाम है</p>
 </div>
 
-<!-- PAGE 2 -->
+<div class="counter-bar">
+  <div class="counter-box">
+    <div class="counter-num" id="totalSaved">0</div>
+    <div class="counter-label">सहेजे गए पृष्ठ</div>
+  </div>
+  <div class="counter-box">
+    <div class="counter-num" id="sessionCount">0</div>
+    <div class="counter-label">इस सत्र में</div>
+  </div>
+</div>
 
-<div id="page2" class="page hidden">
+<div class="writing-section">
+  <div class="canvas-wrapper">
+    <div class="canvas-label">✦ यहाँ राधा नाम लिखें ✦</div>
+    <canvas id="writeCanvas"></canvas>
+    <div class="toolbar">
+      <div class="size-group">
+        <label>मोटाई</label>
+        <input type="range" class="size-slider" id="penSize" min="2" max="10" value="4">
+        <span id="sizeVal" style="font-size:12px;color:#6B4F12;font-weight:700;">4</span>
+      </div>
+      <button class="tool-btn btn-undo" onclick="undo()">↩ पूर्ववत</button>
+      <button class="tool-btn btn-clear" onclick="clearCanvas()">🗑 साफ़ करें</button>
+      <button class="tool-btn btn-save" onclick="saveImage()">💾 सहेजें</button>
+    </div>
+  </div>
+</div>
 
-    <h1>नाम पुस्तक</h1>
+<div class="saved-section">
+  <div class="saved-title">✦ सहेजे गए लेखन ✦</div>
+  <div class="saved-grid" id="savedGrid">
+    <div class="empty-msg" id="emptyMsg">अभी तक कोई लेखन सहेजा नहीं गया।</div>
+  </div>
+</div>
 
-    <div class="topBar">
+<div class="footer">
+  राधे राधे 🌸 — हर नाम लेखन भक्ति का एक कदम है
+</div>
 
-        <button
-            id="backBtn"
-            class="saffron-btn">
-            नाम लेखन
-        </button>
+<div class="toast" id="toast"></div>
 
-        <div class="countBox">
+<script>
+const canvas = document.getElementById("writeCanvas");
+const ctx = canvas.getContext("2d");
 
-            राम :
-            <span id="ramCount">0</span>
+// Resize canvas to match CSS size
+function resizeCanvas() {
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.scale(dpr, dpr);
+  drawLines();
+}
 
-            &nbsp;&nbsp;&nbsp;
+function drawLines() {
+  const rect = canvas.getBoundingClientRect();
+  ctx.clearRect(0, 0, rect.width, rect.height);
+  ctx.strokeStyle = "#e8d5b0";
+  ctx.lineWidth = 0.8;
+  for (let y = 48; y < rect.height; y += 48) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(rect.width, y);
+    ctx.stroke();
+  }
+}
 
-            राधा :
-            <span id="radhaCount">0</span>
+let isDrawing = false;
+let lastX = 0, lastY = 0;
+let undoHistory = [];
+let sessionCount = 0;
 
+const penSizeInput = document.getElementById("penSize");
+const sizeVal = document.getElementById("sizeVal");
+
+penSizeInput.oninput = () => {
+  sizeVal.textContent = penSizeInput.value;
+};
+
+function getPos(e) {
+  const rect = canvas.getBoundingClientRect();
+  if (e.touches) {
+    return {
+      x: e.touches[0].clientX - rect.left,
+      y: e.touches[0].clientY - rect.top
+    };
+  }
+  return {
+    x: e.clientX - rect.left,
+    y: e.clientY - rect.top
+  };
+}
+
+function startDraw(e) {
+  e.preventDefault();
+  isDrawing = true;
+  // Save snapshot for undo
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  undoHistory.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+  if (undoHistory.length > 30) undoHistory.shift();
+
+  const pos = getPos(e);
+  lastX = pos.x;
+  lastY = pos.y;
+
+  // Dot on click
+  ctx.beginPath();
+  ctx.arc(lastX, lastY, parseInt(penSizeInput.value) / 2, 0, Math.PI * 2);
+  ctx.fillStyle = "#0D2B5E";
+  ctx.fill();
+}
+
+function draw(e) {
+  e.preventDefault();
+  if (!isDrawing) return;
+  const pos = getPos(e);
+
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(pos.x, pos.y);
+  ctx.strokeStyle = "#0D2B5E";
+  ctx.lineWidth = parseInt(penSizeInput.value);
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.stroke();
+
+  lastX = pos.x;
+  lastY = pos.y;
+}
+
+function stopDraw(e) {
+  isDrawing = false;
+}
+
+canvas.addEventListener("mousedown", startDraw);
+canvas.addEventListener("mousemove", draw);
+canvas.addEventListener("mouseup", stopDraw);
+canvas.addEventListener("mouseleave", stopDraw);
+canvas.addEventListener("touchstart", startDraw, { passive: false });
+canvas.addEventListener("touchmove", draw, { passive: false });
+canvas.addEventListener("touchend", stopDraw);
+
+function undo() {
+  if (undoHistory.length === 0) return;
+  const snapshot = undoHistory.pop();
+  ctx.putImageData(snapshot, 0, 0);
+}
+
+function clearCanvas() {
+  undoHistory = [];
+  const rect = canvas.getBoundingClientRect();
+  ctx.clearRect(0, 0, rect.width, rect.height);
+  drawLines();
+}
+
+// SAVE IMAGE
+let savedImages = JSON.parse(localStorage.getItem("radha_naam_images") || "[]");
+
+function saveImage() {
+  const dataURL = canvas.toDataURL("image/png");
+
+  // Check if canvas is empty
+  const blank = document.createElement("canvas");
+  blank.width = canvas.width;
+  blank.height = canvas.height;
+  if (dataURL === blank.toDataURL("image/png")) {
+    showToast("⚠️ पहले कुछ लिखें!");
+    return;
+  }
+
+  const now = new Date();
+  const label = now.toLocaleDateString("hi-IN") + " " + now.toLocaleTimeString("hi-IN");
+
+  savedImages.unshift({ img: dataURL, time: label, id: Date.now() });
+  localStorage.setItem("radha_naam_images", JSON.stringify(savedImages));
+
+  sessionCount++;
+  document.getElementById("sessionCount").textContent = sessionCount;
+
+  renderSaved();
+  clearCanvas();
+  showToast("🌸 राधा नाम सहेज लिया गया!");
+}
+
+function deleteImage(id) {
+  savedImages = savedImages.filter(s => s.id !== id);
+  localStorage.setItem("radha_naam_images", JSON.stringify(savedImages));
+  renderSaved();
+  showToast("हटा दिया गया।");
+}
+
+function downloadImage(dataURL, id) {
+  const a = document.createElement("a");
+  a.href = dataURL;
+  a.download = "radha-naam-" + id + ".png";
+  a.click();
+}
+
+function renderSaved() {
+  const grid = document.getElementById("savedGrid");
+  const empty = document.getElementById("emptyMsg");
+  document.getElementById("totalSaved").textContent = savedImages.length;
+
+  if (savedImages.length === 0) {
+    grid.innerHTML = '<div class="empty-msg" id="emptyMsg">अभी तक कोई लेखन सहेजा नहीं गया।</div>';
+    return;
+  }
+
+  grid.innerHTML = "";
+  savedImages.forEach(s => {
+    const card = document.createElement("div");
+    card.className = "saved-card";
+    card.innerHTML = `
+      <img src="${s.img}" alt="राधा नाम लेखन">
+      <div class="saved-card-footer">
+        <span class="saved-card-time">${s.time}</span>
+        <div>
+          <button class="btn-download" onclick="downloadImage('${s.img}', ${s.id})">⬇ डाउनलोड</button>
+          <button class="btn-delete-card" onclick="deleteImage(${s.id})">✕</button>
         </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
 
-    </div>
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2500);
+}
 
-    <div id="bookContainer">
+// INIT
+window.addEventListener("load", () => {
+  resizeCanvas();
+  renderSaved();
+});
 
-        <!-- JS Fill Karega -->
-
-    </div>
-
-    <div class="bottomControls">
-
-        <button
-            id="prevPageBtn"
-            class="saffron-btn">
-            Previous
-        </button>
-
-        <button
-            id="nextPageBtn"
-            class="saffron-btn">
-            Next
-        </button>
-
-        <input
-            type="number"
-            id="jumpPage"
-            placeholder="Page No">
-
-        <button
-            id="jumpBtn"
-            class="saffron-btn">
-            Go
-        </button>
-
-        <button
-            id="printBtn"
-            class="saffron-btn">
-            नाम पुस्तक प्रिंट
-        </button>
-
-    </div>
-
-</div>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
-<script src="app.js"></script>
-
+window.addEventListener("resize", () => {
+  // Re-render after resize (canvas clears, which is acceptable)
+  resizeCanvas();
+});
+</script>
 </body>
 </html>
